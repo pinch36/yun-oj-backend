@@ -1,10 +1,14 @@
 package com.yun.oj.backend.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yun.oj.backend.common.ErrorCode;
 import com.yun.oj.backend.constant.CommonConstant;
+import com.yun.oj.backend.exception.BusinessException;
+import com.yun.oj.backend.exception.ThrowUtils;
 import com.yun.oj.backend.mapper.QuestionMapper;
 import com.yun.oj.backend.model.dto.question.QuestionQueryRequest;
 import com.yun.oj.backend.model.entity.Question;
@@ -30,7 +34,35 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
 
     @Override
     public void validQuestion(Question question, boolean b) {
-        return;
+        if (question == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        String title = question.getTitle();
+        String content = question.getContent();
+        String tags = question.getTags();
+        String answer = question.getAnswer();
+        String judgeCase = question.getJudgeCase();
+        String judgeConfig = question.getJudgeConfig();
+        // 创建时，参数不能为空
+        if (b) {
+            ThrowUtils.throwIf(StringUtils.isAnyBlank(title, content, tags), ErrorCode.PARAMS_ERROR);
+        }
+        // 有参数则校验
+        if (StringUtils.isNotBlank(title) && title.length() > 80) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "标题过长");
+        }
+        if (StringUtils.isNotBlank(content) && content.length() > 8192) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "内容过长");
+        }
+        if (StringUtils.isNotBlank(answer) && answer.length() > 8192) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "答案过长");
+        }
+        if (StringUtils.isNotBlank(judgeCase) && judgeCase.length() > 8192) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "判题用例过长");
+        }
+        if (StringUtils.isNotBlank(judgeConfig) && judgeConfig.length() > 8192) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "判题配置过长");
+        }
     }
 
     @Override
@@ -65,8 +97,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         // 拼接查询条件
         queryWrapper.like(StringUtils.isNotBlank(title), "title", title);
         queryWrapper.like(StringUtils.isNotBlank(tags),"tags", tags);
-        queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);
-        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
+        queryWrapper.eq(id != null && id != 0, "id", id);
+        queryWrapper.eq(userId != null && userId != 0, "userId", userId);
         queryWrapper.eq("isDelete", false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
