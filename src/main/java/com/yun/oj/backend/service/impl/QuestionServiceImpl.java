@@ -12,13 +12,17 @@ import com.yun.oj.backend.exception.ThrowUtils;
 import com.yun.oj.backend.mapper.QuestionMapper;
 import com.yun.oj.backend.model.dto.question.QuestionQueryRequest;
 import com.yun.oj.backend.model.entity.Question;
+import com.yun.oj.backend.model.entity.User;
 import com.yun.oj.backend.model.vo.QuestionVO;
+import com.yun.oj.backend.model.vo.UserVO;
 import com.yun.oj.backend.service.QuestionService;
+import com.yun.oj.backend.service.UserService;
 import com.yun.oj.backend.utils.SqlUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +35,8 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         implements QuestionService {
+    @Resource
+    private UserService userService;
 
     @Override
     public void validQuestion(Question question, boolean b) {
@@ -67,18 +73,15 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
 
     @Override
     public QuestionVO getQuestionVO(Question question, HttpServletRequest request) {
-        QuestionVO questionVO = new QuestionVO();
-        questionVO.setFavourNum(question.getFavourNum());
-        questionVO.setContent(question.getContent());
-        questionVO.setTags(question.getTags());
-        questionVO.setAcceptedNum(question.getAcceptedNum());
-        questionVO.setCreateTime(question.getCreateTime());
-        questionVO.setJudgeCase(question.getJudgeCase());
-        questionVO.setTitle(question.getTitle());
-        questionVO.setThumbNum(questionVO.getThumbNum());
-        questionVO.setUpdateTime(question.getUpdateTime());
-        questionVO.setUserId(questionVO.getUserId());
-        questionVO.setSubmitNum(questionVO.getSubmitNum());
+        QuestionVO questionVO = QuestionVO.objToVo(question);
+        // 1. 关联查询用户信息
+        Long userId = question.getUserId();
+        User user = null;
+        if (userId != null && userId > 0) {
+            user = userService.getById(userId);
+        }
+        UserVO userVO = userService.getUserVO(user);
+        questionVO.setUserVO(userVO);
         return questionVO;
     }
 

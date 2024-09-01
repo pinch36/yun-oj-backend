@@ -1,25 +1,18 @@
 package com.yun.oj.backend.model.vo;
 
-import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.yun.oj.backend.model.entity.Post;
+import com.yun.oj.backend.model.entity.Question;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 帖子视图
- *
-
  */
 @Data
 public class QuestionVO implements Serializable {
-    
+
     /**
      * 标题
      */
@@ -74,7 +67,11 @@ public class QuestionVO implements Serializable {
      * 更新时间
      */
     private Date updateTime;
-    
+
+    /**
+     * 创建题目人的信息
+     */
+    private UserVO userVO;
 
     /**
      * 包装类转对象
@@ -82,11 +79,11 @@ public class QuestionVO implements Serializable {
      * @param questionVO
      * @return
      */
-    public static Post voToObj(QuestionVO questionVO) {
+    public static Question voToObj(QuestionVO questionVO) {
         if (questionVO == null) {
             return null;
         }
-        Post question = new Post();
+        Question question = new Question();
         BeanUtils.copyProperties(questionVO, question);
         return question;
     }
@@ -97,7 +94,7 @@ public class QuestionVO implements Serializable {
      * @param question
      * @return
      */
-    public static QuestionVO objToVo(Post question) {
+    public static QuestionVO objToVo(Question question) {
         if (question == null) {
             return null;
         }

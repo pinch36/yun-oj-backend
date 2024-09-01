@@ -44,16 +44,6 @@ public class QuestionEditRequest implements Serializable {
     private String answer;
 
     /**
-     * 题目提交数
-     */
-    private Integer submitNum;
-
-    /**
-     * 题目通过数
-     */
-    private Integer acceptedNum;
-
-    /**
      * 判题用例（json 数组）
      */
     private String judgeCase;
@@ -62,22 +52,6 @@ public class QuestionEditRequest implements Serializable {
      * 判题配置（json 对象）
      */
     private String judgeConfig;
-
-    /**
-     * 点赞数
-     */
-    private Integer thumbNum;
-
-    /**
-     * 收藏数
-     */
-    private Integer favourNum;
-
-    /**
-     * 是否删除
-     */
-    @TableLogic
-    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 }

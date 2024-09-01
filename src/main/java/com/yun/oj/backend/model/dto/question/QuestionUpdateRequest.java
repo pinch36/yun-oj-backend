@@ -2,6 +2,7 @@ package com.yun.oj.backend.model.dto.question;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 更新请求
@@ -17,24 +18,29 @@ public class QuestionUpdateRequest implements Serializable {
     private Long id;
 
     /**
-     * 题目提交数
+     * 标题
      */
-    private Integer submitNum;
+    private String title;
 
     /**
-     * 题目通过数
+     * 内容
      */
-    private Integer acceptedNum;
+    private String content;
 
     /**
-     * 点赞数
+     * 标签列表
      */
-    private Integer thumbNum;
+    private String tags;
 
     /**
-     * 收藏数
+     * 题目答案
      */
-    private Integer favourNum;
+    private String answer;
+
+    /**
+     * 创建用户 id
+     */
+    private Long userId;
 
     private static final long serialVersionUID = 1L;
 }

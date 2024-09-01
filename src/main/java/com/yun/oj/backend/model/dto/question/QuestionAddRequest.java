@@ -47,11 +47,5 @@ public class QuestionAddRequest implements Serializable {
      */
     private String judgeConfig;
 
-    /**
-     * 创建用户 id
-     */
-    private Long userId;
-
-
     private static final long serialVersionUID = 1L;
 }
