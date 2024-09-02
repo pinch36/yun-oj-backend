@@ -1,5 +1,6 @@
-package com.yun.oj.backend.service;
+package com.yun.oj.backend.judge.service;
 
+import com.yun.oj.backend.judge.model.JudgeInfo;
 import com.yun.oj.backend.model.entity.QuestionSubmit;
 
 /**
@@ -10,5 +11,5 @@ import com.yun.oj.backend.model.entity.QuestionSubmit;
  * @Description:
  */
 public interface JudgeService {
-    boolean judge(QuestionSubmit questionSubmit);
+    JudgeInfo judge(QuestionSubmit questionSubmit);
 }

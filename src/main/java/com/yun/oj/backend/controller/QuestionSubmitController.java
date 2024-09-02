@@ -1,4 +1,5 @@
 package com.yun.oj.backend.controller;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yun.oj.backend.common.BaseResponse;
 import com.yun.oj.backend.common.ErrorCode;
@@ -6,13 +7,13 @@ import com.yun.oj.backend.common.ResultUtils;
 import com.yun.oj.backend.exception.BusinessException;
 import com.yun.oj.backend.exception.ThrowUtils;
 
+import com.yun.oj.backend.judge.model.JudgeInfo;
 import com.yun.oj.backend.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.yun.oj.backend.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.yun.oj.backend.model.entity.QuestionSubmit;
 import com.yun.oj.backend.model.entity.User;
 import com.yun.oj.backend.model.vo.QuestionSubmitVO;
-import com.yun.oj.backend.model.vo.QuestionVO;
-import com.yun.oj.backend.service.JudgeService;
+import com.yun.oj.backend.judge.service.JudgeService;
 import com.yun.oj.backend.service.QuestionSubmitService;
 import com.yun.oj.backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,9 +61,11 @@ public class QuestionSubmitController {
         User loginUser = userService.getLoginUser(request);
         questionSubmit.setUserId(loginUser.getId());
         questionSubmit.setStatus(0);
-        boolean result = questionSubmitService.save(questionSubmit);
-        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        boolean judge = judgeService.judge(questionSubmit);
+        boolean save = questionSubmitService.save(questionSubmit);
+        ThrowUtils.throwIf(!save, ErrorCode.OPERATION_ERROR);
+        JudgeInfo judgeInfo = judgeService.judge(questionSubmit);
+        String judgeJson = JSONUtil.toJsonStr(judgeInfo);
+        questionSubmit.setJudgeInfo(judgeJson);
         boolean update = questionSubmitService.updateById(questionSubmit);
         ThrowUtils.throwIf(!update, ErrorCode.OPERATION_ERROR);
         QuestionSubmitVO questionSubmitVO = questionSubmitService.getQuestionSubmitVO(questionSubmit, request);

@@ -1,5 +1,9 @@
 package com.yun.oj.backend.utils;
 
+import com.yun.oj.backend.judge.codesandbox.CodeSandbox;
+import com.yun.oj.backend.judge.model.JudgeInfo;
+import com.yun.oj.backend.judge.model.ExecuteCodeRequest;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -8,9 +12,13 @@ package com.yun.oj.backend.utils;
  * @Description:
  */
 public class JudgeUtils {
-    public static boolean judge(String code) {
+    public static JudgeInfo judge(ExecuteCodeRequest executeCodeRequest) {
         try{
-            return true;
+//            CodeSandbox codeSandBox = new CodeSandbox();
+//            codeSandBox.setExecuteCodeRequest(executeCodeRequest);
+//            JudgeInfo judgeInfo = codeSandBox.judge();
+//            return judgeInfo;
+            return null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
