@@ -11,5 +11,5 @@ import com.yun.oj.backend.model.entity.QuestionSubmit;
  * @Description:
  */
 public interface JudgeService {
-    JudgeInfo judge(QuestionSubmit questionSubmit);
+    QuestionSubmit judge(QuestionSubmit questionSubmit);
 }

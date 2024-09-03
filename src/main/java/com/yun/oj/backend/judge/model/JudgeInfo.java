@@ -12,6 +12,6 @@ import lombok.Data;
 @Data
 public class JudgeInfo {
    private Long timeout;
-   private String memory;
+   private Long memory;
    private String result;
 }

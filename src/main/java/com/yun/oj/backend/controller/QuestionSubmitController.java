@@ -57,18 +57,21 @@ public class QuestionSubmitController {
         }
         QuestionSubmit questionSubmit = new QuestionSubmit();
         BeanUtils.copyProperties(questionSubmitAddRequest, questionSubmit);
+        questionSubmit.setCode("public class Main {\n" +
+                "    public static void main(String[] args) {\n" +
+                "        int a = Integer.parseInt(args[0]);\n" +
+                "        int b = Integer.parseInt(args[1]);\n" +
+                "        System.out.println(a + b);\n" +
+                "    }\n" +
+                "}\n");
         questionSubmitService.validQuestionSubmit(questionSubmit, true);
         User loginUser = userService.getLoginUser(request);
         questionSubmit.setUserId(loginUser.getId());
         questionSubmit.setStatus(0);
         boolean save = questionSubmitService.save(questionSubmit);
         ThrowUtils.throwIf(!save, ErrorCode.OPERATION_ERROR);
-        JudgeInfo judgeInfo = judgeService.judge(questionSubmit);
-        String judgeJson = JSONUtil.toJsonStr(judgeInfo);
-        questionSubmit.setJudgeInfo(judgeJson);
-        boolean update = questionSubmitService.updateById(questionSubmit);
-        ThrowUtils.throwIf(!update, ErrorCode.OPERATION_ERROR);
-        QuestionSubmitVO questionSubmitVO = questionSubmitService.getQuestionSubmitVO(questionSubmit, request);
+        QuestionSubmit questionSubmitResult = judgeService.judge(questionSubmit);
+        QuestionSubmitVO questionSubmitVO = questionSubmitService.getQuestionSubmitVO(questionSubmitResult, request);
         return ResultUtils.success(questionSubmitVO);
     }
 
