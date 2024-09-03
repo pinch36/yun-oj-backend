@@ -13,6 +13,6 @@ import com.yun.oj.backend.judge.model.JudgeInfo;
 public class DefaultJudgeStrategy implements JudgeStrategy{
     @Override
     public JudgeInfo judge(JudgeContext judgeContext) {
-        return null;
+        return new JavaJudgeStrategy().judge(judgeContext);
     }
 }

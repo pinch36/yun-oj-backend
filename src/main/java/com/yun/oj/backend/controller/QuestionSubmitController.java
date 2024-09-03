@@ -57,13 +57,13 @@ public class QuestionSubmitController {
         }
         QuestionSubmit questionSubmit = new QuestionSubmit();
         BeanUtils.copyProperties(questionSubmitAddRequest, questionSubmit);
-        questionSubmit.setCode("public class Main {\n" +
-                "    public static void main(String[] args) {\n" +
-                "        int a = Integer.parseInt(args[0]);\n" +
-                "        int b = Integer.parseInt(args[1]);\n" +
-                "        System.out.println(a + b);\n" +
-                "    }\n" +
-                "}\n");
+//        questionSubmit.setCode("public class Main {\n" +
+//                "    public static void main(String[] args) {\n" +
+//                "        int a = Integer.parseInt(args[0]);\n" +
+//                "        int b = Integer.parseInt(args[1]);\n" +
+//                "        System.out.println(a + b);\n" +
+//                "    }\n" +
+//                "}\n");
         questionSubmitService.validQuestionSubmit(questionSubmit, true);
         User loginUser = userService.getLoginUser(request);
         questionSubmit.setUserId(loginUser.getId());
